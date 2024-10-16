@@ -242,7 +242,7 @@ model_exists <- function(obj, which_model, fail = TRUE) {
 #' coefficients can be tested, \code{\link{sleuth_results}} to get back
 #' a \code{data.frame} of the results
 #' @export
-sleuth_wt <- function(obj, which_beta, which_model = 'full') {
+sleuth_wt <- function(obj, which_beta, which_model = 'full', adjmethod = 'BH') {
   stopifnot( is(obj, 'sleuth') )
 
   if ( !model_exists(obj, which_model) ) {
@@ -295,7 +295,7 @@ sleuth_wt <- function(obj, which_beta, which_model = 'full') {
     se_b = se,
     wald_stat = b / se,
     pval = 2 * pnorm(abs(wald_stat), lower.tail = FALSE),
-    qval = p.adjust(pval, method = 'BH')
+    qval = p.adjust(pval, method = adjmethod)
     )
 
   obj <- add_test(obj, res, which_beta, 'wt', which_model)
